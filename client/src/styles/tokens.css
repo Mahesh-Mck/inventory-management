@@ -1,0 +1,78 @@
+/*
+ * Design tokens for the Factory Inventory Management client.
+ *
+ * Single source of truth for color, spacing, radius, shadow, layout, and
+ * z-index values. Seeded from the palette that was previously hardcoded and
+ * duplicated across App.vue and component <style> blocks, so adopting these
+ * variables is visually lossless. New/redesigned UI should reference these
+ * tokens; existing components can migrate to them incrementally.
+ */
+
+:root {
+  /* Color — text */
+  --color-text: #0f172a;          /* primary headings / strong text */
+  --color-text-secondary: #334155;/* table body text */
+  --color-text-muted: #64748b;    /* labels, descriptions */
+  --color-text-faint: #94a3b8;    /* placeholder / disabled hints */
+
+  /* Color — surfaces & lines */
+  --color-surface: #ffffff;       /* cards, sidebar, nav */
+  --color-bg: #f8fafc;            /* app background, hover rows, table head */
+  --color-bg-subtle: #f1f5f9;     /* secondary hover */
+  --color-border: #e2e8f0;        /* dividers, card borders */
+  --color-border-strong: #cbd5e1; /* input borders, hover borders */
+
+  /* Color — brand & state */
+  --color-primary: #2563eb;
+  --color-primary-hover: #1d4ed8;
+  --color-primary-soft: #eff6ff;  /* active nav background */
+  --color-success: #10b981;
+  --color-success-soft: #d1fae5;
+  --color-warning: #f59e0b;
+  --color-warning-soft: #fed7aa;
+  --color-danger: #dc2626;
+  --color-danger-soft: #fecaca;
+  --color-info: #3b82f6;
+  --color-info-soft: #dbeafe;
+
+  /* Spacing scale — 0.25rem (4px) base step */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 50px rgba(0, 0, 0, 0.15);
+
+  /* Typography */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+
+  /* Layout */
+  --sidebar-width: 260px;
+
+  /* Transitions */
+  --transition-base: all 0.2s ease;
+
+  /*
+   * Z-index hierarchy — replaces the previous ad-hoc values
+   * (filter bar 90, nav 100, modal 2000) with an ordered scale.
+   */
+  --z-filterbar: 80;
+  --z-sidebar: 100;
+  --z-dropdown: 1000;
+  --z-modal: 2000;
+}

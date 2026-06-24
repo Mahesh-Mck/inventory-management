@@ -102,21 +102,32 @@ export default {
 
 <style scoped>
 .filters-bar {
-  background: #f8fafc;
-  border-bottom: 1px solid #e2e8f0;
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
   padding: 0.75rem 0;
   position: sticky;
-  top: 70px;
-  z-index: 90;
+  top: 0;
+  z-index: var(--z-filterbar);
 }
 
 .filters-container {
-  max-width: 1600px;
-  margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 var(--space-8);
   display: flex;
   align-items: center;
   gap: 1rem;
+}
+
+/* Below the sidebar breakpoint the filter bar sits under the 56px mobile top
+   bar; allow the row to scroll horizontally rather than wrap awkwardly. */
+@media (max-width: 768px) {
+  .filters-bar {
+    top: 56px;
+  }
+
+  .filters-container {
+    padding: 0 var(--space-4);
+    overflow-x: auto;
+  }
 }
 
 .filters-grid {

@@ -7,7 +7,7 @@ Factory Inventory Management System Demo with GitHub integration - Full-stack ap
 ## Critical Tool Usage Rules
 
 ### Subagents
-Use the Task tool with these specialized subagents for appropriate tasks:
+Use the Task 2tool with these specialized subagents for appropriate tasks:
 
 - **vue-expert**: Use for Vue 3 frontend features, UI components, styling, and client-side functionality
   - Examples: Creating components, fixing reactivity issues, performance optimization, complex state management

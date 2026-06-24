@@ -120,6 +120,27 @@ class CreatePurchaseOrderRequest(BaseModel):
     expected_delivery_date: str
     notes: Optional[str] = None
 
+class Task(BaseModel):
+    id: str
+    title: str
+    priority: str
+    # camelCase matches the frontend payload (TasksModal / api.js) so no key
+    # transformation is needed on either side.
+    dueDate: str
+    status: str
+
+class CreateTaskRequest(BaseModel):
+    title: str
+    priority: str
+    dueDate: str
+
+# In-memory store for tasks created at runtime. Starts empty: the client seeds
+# its own mock tasks (composables/useAuth.js) and merges them with these. String
+# ids keep API tasks from colliding with the client's integer mock-task ids in
+# its delete/toggle/v-for-key logic.
+api_tasks: List[dict] = []
+_task_counter = 0
+
 # API endpoints
 @app.get("/")
 def root():
@@ -226,6 +247,45 @@ def get_category_spending():
 def get_recent_transactions():
     """Get recent transactions"""
     return recent_transactions
+
+@app.get("/api/tasks", response_model=List[Task])
+def get_tasks():
+    """Get all runtime-created tasks"""
+    return api_tasks
+
+@app.post("/api/tasks", response_model=Task, status_code=201)
+def create_task(task: CreateTaskRequest):
+    """Create a new task"""
+    global _task_counter
+    _task_counter += 1
+    new_task = {
+        "id": f"api-task-{_task_counter}",
+        "title": task.title,
+        "priority": task.priority,
+        "dueDate": task.dueDate,
+        "status": "pending"
+    }
+    # Prepend so the newest task appears first, matching the client's unshift().
+    api_tasks.insert(0, new_task)
+    return new_task
+
+@app.patch("/api/tasks/{task_id}", response_model=Task)
+def toggle_task(task_id: str):
+    """Toggle a task's status between pending and completed"""
+    task = next((t for t in api_tasks if t["id"] == task_id), None)
+    if not task:
+        raise HTTPException(status_code=404, detail=f"Task {task_id} not found")
+    task["status"] = "completed" if task["status"] == "pending" else "pending"
+    return task
+
+@app.delete("/api/tasks/{task_id}")
+def delete_task(task_id: str):
+    """Delete a task"""
+    global api_tasks
+    if not any(t["id"] == task_id for t in api_tasks):
+        raise HTTPException(status_code=404, detail=f"Task {task_id} not found")
+    api_tasks = [t for t in api_tasks if t["id"] != task_id]
+    return {"success": True, "id": task_id}
 
 @app.get("/api/reports/quarterly")
 def get_quarterly_reports():
